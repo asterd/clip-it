@@ -8,9 +8,11 @@ use windows::core::PCWSTR;
 #[cfg(target_os = "windows")]
 use windows::Win32::Foundation::{HWND, LPARAM, LRESULT, WPARAM};
 #[cfg(target_os = "windows")]
+use windows::Win32::System::DataExchange::AddClipboardFormatListener;
+#[cfg(target_os = "windows")]
 use windows::Win32::UI::WindowsAndMessaging::{
-    AddClipboardFormatListener, CreateWindowExW, DefWindowProcW, DispatchMessageW, GetMessageW,
-    RegisterClassW, TranslateMessage, CW_USEDEFAULT, HMENU, MSG, WINDOW_EX_STYLE, WINDOW_STYLE,
+    CreateWindowExW, DefWindowProcW, DispatchMessageW, GetMessageW, RegisterClassW,
+    TranslateMessage, CW_USEDEFAULT, HMENU, MSG, WINDOW_EX_STYLE, WINDOW_STYLE,
     WM_CLIPBOARDUPDATE, WNDCLASSW,
 };
 
