@@ -4,6 +4,7 @@
   "scripts": {
     "dev": "cd ui && vite",
     "build": "cd ui && vite build",
+    "tauri": "tauri",
     "tauri:dev": "tauri dev",
     "tauri:build": "tauri build"
   },
