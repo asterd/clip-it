@@ -115,6 +115,7 @@ fn setup_tray(app: &tauri::AppHandle) -> anyhow::Result<()> {
     let quit_item = MenuItem::with_id(app, "quit", "Quit", true, None::<&str>)?;
     let menu = Menu::with_items(app, &[&show_item, &settings_item, &pause_item, &quit_item])?;
 
+    #[allow(unused_mut)]
     let mut tray_builder = TrayIconBuilder::new()
         .icon(tray_icon_image())
         .menu(&menu)

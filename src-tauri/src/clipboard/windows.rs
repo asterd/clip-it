@@ -1,5 +1,7 @@
 #[cfg(target_os = "windows")]
 use std::sync::mpsc::Sender;
+#[cfg(target_os = "windows")]
+use std::ptr::null_mut;
 
 #[cfg(target_os = "windows")]
 use windows::core::PCWSTR;
@@ -55,22 +57,19 @@ pub fn run_clipboard_listener(sender: Sender<()>) -> anyhow::Result<()> {
             CW_USEDEFAULT,
             CW_USEDEFAULT,
             CW_USEDEFAULT,
-            HWND(0),
-            HMENU(0),
+            HWND(null_mut()),
+            HMENU(null_mut()),
             None,
             None,
-        );
-
-        if hwnd.0 == 0 {
-            anyhow::bail!("CreateWindowExW failed for clipboard listener");
-        }
+        )
+        .map_err(|err| anyhow::anyhow!("CreateWindowExW failed for clipboard listener: {err}"))?;
 
         if let Err(err) = AddClipboardFormatListener(hwnd) {
             anyhow::bail!("AddClipboardFormatListener failed: {err}");
         }
 
         let mut msg = MSG::default();
-        while GetMessageW(&mut msg, HWND(0), 0, 0).into() {
+        while GetMessageW(&mut msg, HWND(null_mut()), 0, 0).into() {
             TranslateMessage(&msg);
             DispatchMessageW(&msg);
         }
