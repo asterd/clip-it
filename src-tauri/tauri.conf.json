@@ -1,0 +1,54 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Clip It",
+  "version": "0.1.0",
+  "identifier": "com.local.clipit",
+  "build": {
+    "beforeDevCommand": "cd ui && npm run dev",
+    "beforeBuildCommand": "cd ui && npm run build",
+    "frontendDist": "../ui/dist",
+    "devUrl": "http://localhost:5173"
+  },
+  "app": {
+    "macOSPrivateApi": true,
+    "windows": [
+      {
+        "label": "main",
+        "title": "Clip It",
+        "width": 460,
+        "height": 420,
+        "visible": false,
+        "decorations": false,
+        "transparent": true,
+        "alwaysOnTop": true,
+        "resizable": false,
+        "skipTaskbar": true,
+        "focus": true,
+        "center": true
+      },
+      {
+        "label": "settings",
+        "title": "Clip It Settings",
+        "url": "/?view=settings",
+        "width": 430,
+        "height": 310,
+        "visible": false,
+        "decorations": false,
+        "transparent": true,
+        "alwaysOnTop": true,
+        "resizable": false,
+        "skipTaskbar": true,
+        "focus": true,
+        "center": true
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "icon": ["icons/icon.png", "icons/icon.ico", "icons/icon.icns", "icons/icon.svg"]
+  }
+}

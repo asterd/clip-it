@@ -1,0 +1,83 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 255 255 255;
+  --foreground: 15 23 42;
+  --primary: 59 130 246;
+  --secondary: 241 245 249;
+  --accent: 219 234 254;
+  --glass-surface: 255 255 255;
+  --glass-surface-muted: 248 250 252;
+  --window-opacity: 0.78;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: 15 23 42;
+    --foreground: 248 250 252;
+    --primary: 59 130 246;
+    --secondary: 30 41 59;
+    --accent: 51 65 85;
+    --glass-surface: 15 23 42;
+    --glass-surface-muted: 30 41 59;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  padding: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  background-color: transparent;
+  color: rgb(var(--foreground));
+  overflow: hidden;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgb(var(--secondary));
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(var(--accent));
+}
+
+@layer utilities {
+  .glass-window {
+    background-color: rgb(var(--glass-surface) / var(--window-opacity));
+  }
+
+  .glass-header {
+    background-color: rgb(var(--glass-surface-muted) / 0.6);
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}

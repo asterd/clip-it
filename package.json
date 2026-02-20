@@ -1,0 +1,13 @@
+{
+  "name": "clip-it",
+  "private": true,
+  "scripts": {
+    "dev": "cd ui && vite",
+    "build": "cd ui && vite build",
+    "tauri:dev": "tauri dev",
+    "tauri:build": "tauri build"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2"
+  }
+}
