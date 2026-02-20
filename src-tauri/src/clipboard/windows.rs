@@ -1,7 +1,9 @@
 #[cfg(target_os = "windows")]
-use std::sync::mpsc::Sender;
-#[cfg(target_os = "windows")]
 use std::ptr::null_mut;
+#[cfg(target_os = "windows")]
+use std::sync::OnceLock;
+#[cfg(target_os = "windows")]
+use std::sync::mpsc::Sender;
 
 #[cfg(target_os = "windows")]
 use windows::core::PCWSTR;
@@ -17,7 +19,7 @@ use windows::Win32::UI::WindowsAndMessaging::{
 };
 
 #[cfg(target_os = "windows")]
-static mut GLOBAL_SENDER: Option<Sender<()>> = None;
+static GLOBAL_SENDER: OnceLock<Sender<()>> = OnceLock::new();
 
 #[cfg(target_os = "windows")]
 unsafe extern "system" fn wnd_proc(
@@ -27,7 +29,7 @@ unsafe extern "system" fn wnd_proc(
     lparam: LPARAM,
 ) -> LRESULT {
     if msg == WM_CLIPBOARDUPDATE {
-        if let Some(sender) = &GLOBAL_SENDER {
+        if let Some(sender) = GLOBAL_SENDER.get() {
             let _ = sender.send(());
         }
         return LRESULT(0);
@@ -39,7 +41,9 @@ unsafe extern "system" fn wnd_proc(
 #[cfg(target_os = "windows")]
 pub fn run_clipboard_listener(sender: Sender<()>) -> anyhow::Result<()> {
     unsafe {
-        GLOBAL_SENDER = Some(sender);
+        if GLOBAL_SENDER.get().is_none() {
+            let _ = GLOBAL_SENDER.set(sender.clone());
+        }
 
         let class_name: Vec<u16> = "ClipItHiddenListener\0".encode_utf16().collect();
         let wc = WNDCLASSW {
@@ -72,7 +76,7 @@ pub fn run_clipboard_listener(sender: Sender<()>) -> anyhow::Result<()> {
 
         let mut msg = MSG::default();
         while GetMessageW(&mut msg, HWND(null_mut()), 0, 0).into() {
-            TranslateMessage(&msg);
+            let _ = TranslateMessage(&msg);
             DispatchMessageW(&msg);
         }
     }
